@@ -1,52 +1,39 @@
-import { useState } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { useState } from "react";
 
 function DirectorForm() {
-  const [name, setName] = useState("")
-  const [bio, setBio] = useState("")
+  const { addDirector } = useOutletContext();
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const newDirector = { name, bio, movies: [] }
-    fetch("http://localhost:4000/directors", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newDirector)
-    })
-    .then(r => {
-        if (!r.ok) { throw new Error("failed to add director")}
-        return r.json()
-    })
-    .then(data => {
-        console.log(data)
-        // handle context/state changes
-        // navigate to newly created director page
-    })
-    .catch(console.log)
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const newDirector = {
+      id: Date.now(),
+      name,
+      movies: [],
+    };
+
+    addDirector(newDirector);
+
+    navigate(`/directors/${newDirector.id}`);
   }
 
   return (
     <div>
       <h2>Add New Director</h2>
+
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Director's Name"
+          placeholder="Director name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
         />
-        <textarea
-          placeholder="Director's Bio"
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          required
-        />
-        <button type="submit">Add Director</button>
+        <button>Add</button>
       </form>
     </div>
-  )
+  );
 }
 
-export default DirectorForm
+export default DirectorForm;

@@ -34,6 +34,11 @@
             "Drama",
             "Thriller"
           ]
+        },
+        {
+          "id": 1778494448761,
+          "title": "Moana",
+          "description": "Life of Adventure"
         }
       ]
     },
@@ -120,5 +125,6 @@
         }
       ]
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
